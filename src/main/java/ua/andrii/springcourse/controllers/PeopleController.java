@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ua.andrii.springcourse.model.Person;
 import ua.andrii.springcourse.service.PeopleService;
 import ua.andrii.springcourse.validator.PersonValidator;
-
 import javax.validation.Valid;
 
 @Controller
