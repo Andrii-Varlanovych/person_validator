@@ -55,11 +55,12 @@ public class PeopleDaoJDBC implements PeopleDao {
     public void createPerson(Person person) {
         try {
             PreparedStatement preparedStatement
-                    = jdbcConnection.prepareStatement("INSERT INTO person(name, age, email) " +
-                    "VALUES (?, ?, ?)");
+                    = jdbcConnection.prepareStatement("INSERT INTO person(name, age, email, address) " +
+                    "VALUES (?, ?, ?, ?)");
             preparedStatement.setString(1, person.getName());
             preparedStatement.setInt(2, person.getAge());
             preparedStatement.setString(3, person.getEmail());
+            preparedStatement.setString(4, person.getAddress());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
@@ -82,17 +83,17 @@ public class PeopleDaoJDBC implements PeopleDao {
         try {
             PreparedStatement preparedStatement
                     = jdbcConnection.prepareStatement
-                    ("UPDATE person SET name = ?, age = ?, email = ? WHERE id = ?");
+                    ("UPDATE person SET name = ?, age = ?, email = ?, address = ? WHERE id = ?");
             preparedStatement.setString(1, updatedPerson.getName());
             preparedStatement.setInt(2, updatedPerson.getAge());
             preparedStatement.setString(3, updatedPerson.getEmail());
-            preparedStatement.setInt(4, id);
+            preparedStatement.setString(4, updatedPerson.getAddress());
+            preparedStatement.setInt(5, id);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
         }
-
     }
 
     @Override
@@ -130,6 +131,7 @@ public class PeopleDaoJDBC implements PeopleDao {
         person.setName(resultSet.getString("name"));
         person.setAge(resultSet.getInt("age"));
         person.setEmail(resultSet.getString("email"));
+        person.setAddress(resultSet.getString("address"));
         return person;
     }
 }
