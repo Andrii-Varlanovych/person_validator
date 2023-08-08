@@ -7,6 +7,8 @@ import org.springframework.validation.Errors;
 import ua.andrii.springcourse.dao.PeopleDaoJDBC;
 import ua.andrii.springcourse.model.Person;
 
+import java.util.Optional;
+
 @Component
 public class PersonValidatorJDBC implements PersonValidator {
     private PeopleDaoJDBC peopleDaoJDBC;
@@ -24,7 +26,8 @@ public class PersonValidatorJDBC implements PersonValidator {
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
-        if (peopleDaoJDBC.getPersonByEmail(person.getEmail()).isPresent()) {
+        Optional<Person> personByEmail = peopleDaoJDBC.getPersonByEmail(person.getEmail());
+        if (personByEmail.isPresent() && personByEmail.get().getId() != person.getId()) {
             errors.rejectValue("email", "", "Person with this email is already exists in DB");
         }
     }
