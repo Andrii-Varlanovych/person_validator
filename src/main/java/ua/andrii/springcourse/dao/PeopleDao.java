@@ -1,5 +1,6 @@
 package ua.andrii.springcourse.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ua.andrii.springcourse.model.Person;
 
 import java.util.List;

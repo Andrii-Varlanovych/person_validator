@@ -37,7 +37,8 @@ public class PeopleServiceHibernate implements PeopleService {
     public void updatePerson(int id, Person person) {
         peopleDao.updatePerson(id, person);
     }
-
+                                    // It is not need to do this class,
+                                    // because  validation works with PersonValidatorJDBCTemplate class
     @Override
     public void deletePerson(int id) {
         peopleDao.deletePerson(id);
