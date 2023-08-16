@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@Primary
+
 public class PeopleDaoJDBCTemplate implements PeopleDao {
     private JdbcTemplate jdbcTemplate;
     private PersonRowMapper personRowMapper;

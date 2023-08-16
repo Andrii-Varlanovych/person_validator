@@ -1,18 +1,29 @@
 package ua.andrii.springcourse.model;
 
+import jakarta.persistence.*;
+
 import javax.validation.constraints.*;
 
+@Entity
+@Table(name = "Person")
 public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+    @Column(name = "name")
     @NotEmpty(message = "Name could not be empty")
     @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
     private String name;
+    @Column(name = "age")
     @Min(value = 2, message = "Age should be greater 2")
     @Max(value = 120, message = "Age should be less than 120")
     private int age;
+    @Column(name = "email")
     @NotEmpty(message = "Email could not be empty")
     @Email(message = "This is not an email")
     private String email;
+    @Column(name = "address")
     @Pattern(regexp = "[A-Z]\\w+, [A-Z]\\w+, \\d{6}", message = "Address should be : Country, City, 123456")
     private String address;
 
