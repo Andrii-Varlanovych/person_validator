@@ -5,8 +5,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,14 +21,18 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("ua.andrii.springcourse")
+@PropertySource("classpath:hibernate.properties")
+@EnableTransactionManagement
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
+    private final Environment environment;
 
     @Autowired
-    public SpringConfig(ApplicationContext applicationContext) {
+    public SpringConfig(ApplicationContext applicationContext, Environment environment) {
         this.applicationContext = applicationContext;
+        this.environment = environment;
     }
 
     @Bean
@@ -55,10 +62,10 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/springcource_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("12345678");
+        dataSource.setDriverClassName(environment.getRequiredProperty("hibernate.connection.driver_class"));
+        dataSource.setUrl(environment.getRequiredProperty("hibernate.connection.url"));
+        dataSource.setUsername(environment.getRequiredProperty("hibernate.connection.username"));
+        dataSource.setPassword(environment.getRequiredProperty("hibernate.connection.password"));
         return dataSource;
     }
 
@@ -66,5 +73,6 @@ public class SpringConfig implements WebMvcConfigurer {
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
+
 }
 
