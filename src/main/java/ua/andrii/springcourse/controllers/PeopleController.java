@@ -1,25 +1,24 @@
 package ua.andrii.springcourse.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.andrii.springcourse.model.Person;
 import ua.andrii.springcourse.service.PeopleService;
-import ua.andrii.springcourse.validator.PersonValidator;
+import ua.andrii.springcourse.validator.PersonValidatorJDBC;
+
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
     private PeopleService peopleService;
-    private ua.andrii.springcourse.validator.PersonValidator personValidator;
+    private PersonValidatorJDBC personValidatorJDBC;
 
-    @Autowired
-    public PeopleController(PeopleService peopleService, PersonValidator personValidator) {
+    public PeopleController(PeopleService peopleService, PersonValidatorJDBC personValidatorJDBC) {
         this.peopleService = peopleService;
-        this.personValidator = personValidator;
+        this.personValidatorJDBC = personValidatorJDBC;
     }
 
     @GetMapping()
@@ -43,7 +42,7 @@ public class PeopleController {
     @PostMapping()
     public String createPerson(@ModelAttribute("person") @Valid Person person,
                                BindingResult bindingResult) {
-        personValidator.validate(person, bindingResult);
+        personValidatorJDBC.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
             return "people/createNewPerson_page";
         }
@@ -62,7 +61,7 @@ public class PeopleController {
     public String updatePerson(@PathVariable("id") int id,
                                @ModelAttribute("person") @Valid Person person,
                                BindingResult bindingResult) {
-        personValidator.validate(person, bindingResult);
+        personValidatorJDBC.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
             return "people/editPerson_page";
         }

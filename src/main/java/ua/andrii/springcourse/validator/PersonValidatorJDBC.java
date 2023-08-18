@@ -4,13 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import ua.andrii.springcourse.dao.PeopleDaoJDBC;
 import ua.andrii.springcourse.model.Person;
 
 import java.util.Optional;
 
 @Component
-public class PersonValidatorJDBC implements PersonValidator {
+@Primary
+public class PersonValidatorJDBC implements Validator {
     private PeopleDaoJDBC peopleDaoJDBC;
 
     @Autowired
